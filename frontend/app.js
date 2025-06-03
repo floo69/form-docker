@@ -1,4 +1,3 @@
-// frontend/app.js
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -8,17 +7,17 @@ app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-// Home page with form
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+
 app.get('/', (req, res) => {
     res.render('index', { error: null });
 });
 
-// Handle form submission
 app.post('/submit', async (req, res) => {
     try {
         console.log('Form data received:', req.body);
         
-        const response = await axios.post('http://localhost:5000/api/submit', req.body, {
+        const response = await axios.post(`${BACKEND_URL}/api/submit`, req.body, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -33,7 +32,6 @@ app.post('/submit', async (req, res) => {
     }
 });
 
-// Success page
 app.get('/success', (req, res) => {
     res.render('success');
 });
