@@ -6,6 +6,7 @@ services:
       - "5000:5000"
     environment:
       - FLASK_ENV=development  
+      - FLASK_APP=app.py
     volumes:
       - ./backend:/app
       - ./backend/.env:/app/.env
@@ -32,3 +33,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mongodb_data:
