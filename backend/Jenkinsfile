@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         MONGODB_URI = credentials('MONGODB_URI')
-        SECRET_KEY = credentials('SECRET_KEY')
     }
 
     stages {
