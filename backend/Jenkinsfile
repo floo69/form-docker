@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MONGO_URI = credentials('MONGO_URI')
+        MONGODB_URI = credentials('MONGODB_URI')
         SECRET_KEY = credentials('SECRET_KEY')
     }
 
