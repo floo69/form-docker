@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        FLASK_ENV = 'development'
-        # Optionally inject more here or through Jenkins GUI
+        MONGO_URI = credentials('MONGO_URI')
+        SECRET_KEY = credentials('SECRET_KEY')
     }
 
     stages {
@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('Install Python Dependencies') {
+        stage('Install Python Deps') {
             steps {
                 dir('backend') {
                     sh 'pip install -r requirements.txt'
@@ -21,16 +21,18 @@ pipeline {
             }
         }
 
-        stage('Set Env File') {
+        stage('Create .env') {
             steps {
                 dir('backend') {
-                    // Copy env file if manually stored on EC2
-                    sh 'cp /home/ubuntu/backend.env .env || echo "No .env copied"'
+                    writeFile file: '.env', text: """
+                    MONGO_URI=${MONGO_URI}
+                    SECRET_KEY=${SECRET_KEY}
+                    """
                 }
             }
         }
 
-        stage('Run Flask App') {
+        stage('Run Flask') {
             steps {
                 sh 'pm2 restart flask-app || pm2 start backend/app.py --interpreter python3 --name flask-app'
             }
