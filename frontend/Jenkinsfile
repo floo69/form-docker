@@ -1,40 +1,23 @@
 pipeline {
-  agent any
+    agent any
 
-  tools {
-    nodejs 'NodeJS-18'    /
-  }
+    tools {
+        nodejs 'NodeJS-18' 
+    }
 
-  environment {
-    PORT = '3000'
-    NODE_ENV = 'production'
-  }
-
-  stages {
-    stage('Install Dependencies') {
-      steps {
-        dir('frontend') {
-          sh 'npm install'
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
         }
-      }
-    }
 
-    stage('Run Express App') {
-      steps {
-        dir('frontend') {
-          sh 'pm2 restart express-app || pm2 start app.js --name express-app'
+        stage('Run Express App') {
+            steps {
+                sh 'pm2 restart express-app || pm2 start frontend/app.js --name express-app'
+            }
         }
-      }
     }
-  }
-
-  post {
-    success {
-      echo 'Express deployment successful!'
-    }
-    failure {
-      echo 'Express deployment failed!'
-      sh 'pm2 logs express-app --lines 20'
-    }
-  }
 }
