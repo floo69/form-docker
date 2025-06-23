@@ -36,6 +36,6 @@ app.get('/success', (req, res) => {
     res.render('success');
 });
 
-app.listen(3000, () => {
+app.listen(3000,  '0.0.0.0', () => {
     console.log('Frontend server running on http://localhost:3000');
 });
