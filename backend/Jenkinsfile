@@ -6,12 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                git 'https://github.com/floo69/form-docker.git'
-            }
-        }
-
         stage('Install Python Deps') {
             steps {
                 dir('backend') {
@@ -20,12 +14,11 @@ pipeline {
             }
         }
 
-        stage('Create .env') {
+        stage('Create .env File') {
             steps {
                 dir('backend') {
                     writeFile file: '.env', text: """
-                    MONGO_URI=${MONGO_URI}
-                    SECRET_KEY=${SECRET_KEY}
+                    MONGODB_URI=${MONGODB_URI}
                     """
                 }
             }
