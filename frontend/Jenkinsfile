@@ -1,11 +1,13 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS-18' 
-    }
-
     stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/floo69/form-docker.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {

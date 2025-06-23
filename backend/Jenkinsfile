@@ -1,40 +1,40 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    MONGODB_URI = credentials('MONGODB_URI')
-  }
-
-  stages {
-    stage('Install Python Deps') {
-      steps {
-        dir('backend') {
-          sh '''
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-          '''
-        }
-      }
+    environment {
+        MONGODB_URI = credentials('MONGODB_URI')
     }
 
-    stage('Create .env File') {
-      steps {
-        dir('backend') {
-          writeFile file: '.env', text: """
+    stages {
+        stage('Install Python Deps') {
+            steps {
+                dir('backend') {
+                    sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r requirements.txt
+                    '''
+                }
+            }
+        }
+
+        stage('Create .env File') {
+            steps {
+                dir('backend') {
+                    writeFile file: '.env', text: """
 MONGODB_URI=${MONGODB_URI}
 """
+                }
+            }
         }
-      }
-    }
 
-    stage('Run Flask') {
-      steps {
-        sh '''
-          cd backend
-          pm2 restart flask-app || pm2 start venv/bin/python app.py --name flask-app
-        '''
-      }
+        stage('Run Flask') {
+            steps {
+                sh '''
+                    cd backend
+                    pm2 restart flask-app || pm2 start venv/bin/python app.py --name flask-app
+                '''
+            }
+        }
     }
-  }
 }
