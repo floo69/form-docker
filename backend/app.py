@@ -17,6 +17,10 @@ collection = db['submissions']
 def index():
     return "Hello, world!"
 
+@app.route('/health')
+def health_check():
+    return {'status': 'healthy'}, 200
+
 
 @app.route('/api/submit', methods=['POST'])
 def submit_data():

@@ -17,6 +17,10 @@ app.get('/', (req, res) => {
     res.render('index', { error: null });
 });
 
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy' });
+});
+
 app.post('/submit', async (req, res) => {
     try {
         console.log('Form data received:', req.body);
