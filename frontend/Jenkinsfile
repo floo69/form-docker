@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/floo69/form-docker.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Run Express App') {
+            steps {
+                sh 'pm2 restart express-app || pm2 start frontend/app.js --name express-app'
+            }
+        }
+    }
+}

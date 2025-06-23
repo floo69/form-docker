@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        FLASK_ENV = 'development'
+        # Optionally inject more here or through Jenkins GUI
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/floo69/form-docker.git'
+            }
+        }
+
+        stage('Install Python Dependencies') {
+            steps {
+                dir('backend') {
+                    sh 'pip install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Set Env File') {
+            steps {
+                dir('backend') {
+                    // Copy env file if manually stored on EC2
+                    sh 'cp /home/ubuntu/backend.env .env || echo "No .env copied"'
+                }
+            }
+        }
+
+        stage('Run Flask App') {
+            steps {
+                sh 'pm2 restart flask-app || pm2 start backend/app.py --interpreter python3 --name flask-app'
+            }
+        }
+    }
+}
