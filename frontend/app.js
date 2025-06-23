@@ -17,10 +17,6 @@ app.get('/', (req, res) => {
     res.render('index', { error: null });
 });
 
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy' });
-});
-
 app.post('/submit', async (req, res) => {
     try {
         console.log('Form data received:', req.body);
@@ -45,5 +41,5 @@ app.get('/success', (req, res) => {
 });
 
 app.listen(3000, '0.0.0.0', () => {
-    console.log('Frontend server running on http://0.0.0.0:3000');
+    console.log('Frontend server running on 3000');
 });
