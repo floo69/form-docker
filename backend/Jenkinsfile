@@ -9,7 +9,11 @@ pipeline {
         stage('Install Python Deps') {
             steps {
                 dir('backend') {
-                    sh 'pip install -r requirements.txt'
+                    sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r requirements.txt
+                    '''
                 }
             }
         }
@@ -18,15 +22,18 @@ pipeline {
             steps {
                 dir('backend') {
                     writeFile file: '.env', text: """
-                    MONGODB_URI=${MONGODB_URI}
-                    """
+MONGODB_URI=${MONGODB_URI}
+"""
                 }
             }
         }
 
         stage('Run Flask') {
             steps {
-                sh 'pm2 restart flask-app || pm2 start backend/app.py --interpreter python3 --name flask-app'
+                sh '''
+                    cd backend
+                    pm2 restart flask-app || pm2 start venv/bin/python app.py --name flask-app
+                '''
             }
         }
     }
