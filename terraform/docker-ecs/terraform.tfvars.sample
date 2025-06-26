@@ -1,0 +1,3 @@
+ecr_backend_image_url = "your-ecr-url/form-docker-backend:latest"
+ecr_frontend_image_url = "your-ecr-url/form-docker-frontend:latest"
+mongodb_uri           = "mongodb+srv://username:password@cluster0.mongodb.net/..."

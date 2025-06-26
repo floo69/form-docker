@@ -13,6 +13,11 @@ client = MongoClient(os.getenv('MONGODB_URI'))
 db = client['formdata']
 collection = db['submissions']
 
+@app.route("/api/health", methods=["GET"])
+def health_check():
+    return jsonify(status="ok"), 200
+
+
 @app.route("/")
 def index():
     return "Hello, world!"
